@@ -1,7 +1,37 @@
 import os
 import spectrogram
+import random
+import numpy as np
+from matplotlib.image import imread
 
 data_path = '../data/'
+
+def getData(dataset, featurename=None, n=-1, start=0, rand=False):
+    # returns list of n spectrograms
+    # list is used due to varying dimensions
+    # if n=-1 all spectrograms in the directory are returned
+    # start is offset from first file if not random
+    base_dir   = data_path + dataset + '/'
+    img_dir    = base_dir  + 'images/'
+    if (featurename != None): img_dir += (featurename+'/')
+
+    filelist_full = os.listdir(img_dir)
+    filelist = []
+    if n == -1:
+        filelist=filelist_full
+    else:
+        if rand:
+            filelist = random.sample(filelist_full,n)
+        else:
+            filelist = filelist_full[start:start+n]
+
+    spectarray = []
+ 
+    for file in filelist:
+        image = imread(img_dir+file)
+        spectarray.append(image)
+
+    return spectarray
 
 def spect_dir(dataset, featurename=None):
 # Apply the spectrogram function to all items in a folder
@@ -21,8 +51,8 @@ def spect_dir(dataset, featurename=None):
     if featurename != None:
         try: os.mkdir(img_dir+(featurename+'/'))
         except:
-            print("Spectrograms already exist for {0}!".format(featurename))
-            print("Delete the image dir for the feature if you want to regen")
+            print("Spectrograms already calculated for " + featurename + "!")
+            print("Delete the image directory for the feature if you want to regen")
             print("Skipping...")
             return
         img_dir += (featurename+'/')
@@ -30,7 +60,7 @@ def spect_dir(dataset, featurename=None):
     index = 1
     for wav_filename in wavfiles:
         print("Generating Spectrogram for " + audio_dir+wav_filename)
-        print("File {0} of {1}".format(index,len(wavfiles)))
+        print("File " + str(index) + " of " + str(len(wavfiles)))
         index += 1
         img_filename = wav_filename.split('.')[0] + '.png'
         spectrogram.wav_to_spec(audio_dir+wav_filename, img_dir+img_filename)
@@ -43,6 +73,5 @@ def spect_all():
         print("\nMaking Spectrograms for "+feature)
         print(feature)
         spect_dir('train', featurename=feature)
-    spect_dir(test)
+    spect_dir('test')
 
-spect_all()
