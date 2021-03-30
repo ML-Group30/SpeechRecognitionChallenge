@@ -79,15 +79,12 @@ def getNoise(n, filename='random', flatten=True):
         image = imread(img_dir+file)
         # grab a random 87 consecutive frames
         offset = random.randint(0,image.shape[1]-87)
-        print(offset)
         image = image[:, offset:(offset+87)]
         if flatten:
             image = image.flatten()
         noise_list.append(image)
 
     return noise_list
-
-getNoise(1,'running_tap.png')
 
 def dataSize(no_bg=True):
     # quick func to return max and average spectrogram size
