@@ -9,7 +9,7 @@ def preprocess_data(file):
 
     words = os.listdir(file)
 
-    # Filter out background noise and .7z file
+    # Filter out categories that don't belong to a class.
     words.remove('_background_noise_')
     words = [f for f in words if not f.startswith('.')]
 
@@ -55,6 +55,6 @@ def run_model(file):
 spectrogram_data = '../data/spectrograms/train/images'
 mfcc_data = '../data/mfcc/train/'
 
-# Run random forest on spectrogram and mfcc data and print results
+# Run AdaBoost on spectrogram and mfcc data and print results
 print("spectrogram:", run_model(spectrogram_data))
 print("mfcc:", run_model(mfcc_data))

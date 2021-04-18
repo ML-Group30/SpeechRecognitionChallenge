@@ -9,7 +9,7 @@ def preprocess_data(file):
 
     words = os.listdir(file)
 
-    # Filter out background noise and .7z file
+    # Filter out categories that don't belong to a class.
     words.remove('_background_noise_')
     words = [f for f in words if not f.startswith('.')]
 
