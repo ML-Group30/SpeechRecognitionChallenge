@@ -1,6 +1,6 @@
 import os
 import data_util
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import AdaBoostClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
@@ -42,7 +42,7 @@ def run_model(file):
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.1)
 
     # Fit the model.
-    model = RandomForestClassifier()
+    model = AdaBoostClassifier()
     model.fit(x_train, y_train)
 
     # Check accuracy of model
